@@ -17,12 +17,15 @@ If you not using ssh you need to set a layout to you keyboard
  Please read https://wiki.archlinux.org/index.php/partitioning and https://wiki.archlinux.org/index.php/Dm-crypt for more information.
  I personally like to use fdisk and to create this layout:
 ## Disk layout  shoud be like:
+
 | Partition   | Name 	  | Partition type 		| FS Type   	| Size   			|
 |-------------|-----------|---------------------|---------------|-------------------|
 | /boot/EFI   | /dev/sda1 | EFI System Partition| FAT32     	| 512 MiB			|
 | /boot       | /dev/sda2 | Linux 		   		| ext4      	| 512 MiB			|
 | [SWAP]      | /dev/sda3 | Linux swap 			| SWAP      	| 16 GiB 			|
 | luks		  | /dev/sda4 | Linux 				| linux		    | rest of the disk	|
+
+
 ** It is worth noting that the / boot / EFI / and / boot / partition is essential for some commands of this installation.
 If you prefer another layout, look for information on the wiki https://wiki.archlinux.org/index.php/Installation_guide and adapt the commands to suit you. **
 After creating the system partitions we need to format and create the container.
