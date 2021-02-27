@@ -26,8 +26,8 @@ If you not using ssh you need to set a layout to you keyboard
 | luks		  | /dev/sda4 | Linux 				| linux		    | rest of the disk	|
 
 
-** It is worth noting that the / boot / EFI / and / boot / partition is essential for some commands of this installation.
-If you prefer another layout, look for information on the wiki https://wiki.archlinux.org/index.php/Installation_guide and adapt the commands to suit you. **
+**It is worth noting that the / boot / EFI / and / boot / partition is essential for some commands of this installation.
+If you prefer another layout, look for information on the wiki https://wiki.archlinux.org/index.php/Installation_guide and adapt the commands to suit you.**
 After creating the system partitions we need to format and create the container.
 ```
 mkfs.ext4 /dev/sda1
