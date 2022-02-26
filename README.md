@@ -1,4 +1,5 @@
 ## About the repo: 
-This repo was made for my installation of Arch Linux my way. Even so, I decided to separate the installation from the customizations that I normally do on the system.
-[Install.md](https://github.com/luismacena19/arch_installation_btrfs_luks/blob/main/Install.md) is the installation itself and [AfterParty.md](https://github.com/luismacena19/arch_installation_btrfs_luks/blob/main/AfterParty.md) is the customization file.
-In the future I intend to create an interactive script to install the system, but that will be for the future.
+This repo was made for my installation of Arch Linux. Even so, I decided to separate the installation from the customizations that I normally do on the system, as well as the installation on LEGACY and EFI systems.
+* [Install_EFI.md](https://github.com/luismacena19/arch_installation_btrfs_luks/blob/main/Install_EFI.md) 
+* [Install_LEGACY.md](https://github.com/luismacena19/arch_installation_btrfs_luks/blob/main/Install_LEGACY.md)
+* [AfterParty.md](https://github.com/luismacena19/arch_installation_btrfs_luks/blob/main/AfterParty.md)
