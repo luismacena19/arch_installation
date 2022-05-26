@@ -20,7 +20,7 @@ ILoveCandy
 ```
 Installing usefull programs
 ```
-sudo pacman -S xfce4-terminal picom dunst gvfs pcmanfm zsh lxappearance ntfs-3g bc alsa-utils pulseaudio pavucontrol xorg-xbacklight  redshift feh imagemagick pulseaudio-alsa pulseaudio-equalizer pulseaudio-jack xorg-xsetroot mpv youtube-dl glances telegram-desktop xf86-video-intel jdk8-openjdk jdk-openjdk gnome-keyring
+sudo pacman -S xfce4-terminal picom dunst gvfs pcmanfm zsh lxappearance ntfs-3g bc alsa-utils pulseaudio pavucontrol xorg-xbacklight  redshift feh imagemagick pulseaudio-alsa pulseaudio-equalizer pulseaudio-jack xorg-xsetroot mpv youtube-dl glances telegram-desktop xf86-video-intel jdk8-openjdk jdk-openjdk gnome-keyring cronie lxsession polkit
 ```
 And configuring video options, to Intel Graphics
 ```
@@ -34,6 +34,17 @@ Section "Device"
 	Option "TearFree" "true"
 EndSection 
 ```
+And configuring video options, to Radeon
+```
+sudo nvim /etc/X11/xorg.conf.d/20-radeon.conf
+```
+```
+Section "Device"
+	Identifier "Radeon"
+	Driver "radeon"
+	Option "TearFree" "true"
+	Option "ColorTiling" "on"
+EndSec
 Fixing java blank apps by
 ```
 sudo echo "export _JAVA_AWT_WM_NONREPARENTING=1" >> /etc/profile.d/jre.sh
