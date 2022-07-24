@@ -48,16 +48,16 @@ Note that chunsuke is an arbitrary name that you can choose freely, BUT, that na
 
 ```bash
 cryptsetup luksOpen /dev/sda2 chunsuke
+mkfs.ext4 /dev/mapper/chunsuke
 pvcreate /dev/mapper/chunsuke
 vgcreate VGMaruGroup /dev/mapper/chunsuke
-lvcreate -L 32G VGMaruGroup -n root && \
-lvcreate -l 100%FREE VGMaruGroup -n home && \
-mkfs.ext4 /dev/VGMaruGroup/home && \
-mkfs.ext4 /dev/VGMaruGroup/root && \
-mount /dev/VGMaruGroup/root /mnt && \
-mkdir /mnt/home && \
+lvcreate -L 32G VGMaruGroup -n root
+lvcreate -l 100%FREE VGMaruGroup -n home
+mkfs.ext4 /dev/VGMaruGroup/home 
+mkfs.ext4 /dev/VGMaruGroup/root 
+mount /dev/VGMaruGroup/root /mnt 
+mkdir /mnt/home
 mount /dev/VGMaruGroup/home /mnt/home
-mkfs.ext4 /dev/mapper/chunsuke
 ```
 
 After that we need to mount de filesystem so we can create the directories that grub uses for boot.
@@ -72,7 +72,7 @@ sync
 Now lets install the system, generate fstab and chroot into the system
 
 ```bash
-pacstrap /mnt base base-devel linux linux-headers linux-firmware neovim
+pacstrap /mnt base base-devel linux linux-headers linux-firmware neovim lvm2
 genfstab -p /mnt >> /mnt/etc/fstab
 arch-chroot /mnt
 ```
@@ -121,7 +121,7 @@ nvim /etc/mkinitcpio.conf
 We gona add **encrypt** hook on the hooks line.
 
 ```bash
-(HOOKS="base udev autodetect modconf block encrypt filesystems keyboard fsck")
+(HOOKS="base udev autodetect modconf block lvm2 encrypt filesystems keyboard fsck")
 ```
 
 Now we run mkinitcpio with kernel version of our choice
