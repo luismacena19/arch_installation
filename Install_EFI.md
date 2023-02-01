@@ -57,7 +57,7 @@ pvcreate /dev/mapper/chunsuke
 
 vgcreate VGMaruGroup /dev/mapper/chunsuke
 
-lvcreate -L 32G VGMaruGroup -n root && \
+lvcreate -L 60G VGMaruGroup -n root && \
 
 lvcreate -l 100%FREE VGMaruGroup -n home && \
 
