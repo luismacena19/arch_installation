@@ -20,7 +20,7 @@ ILoveCandy
 ```
 Installing usefull programs
 ```
-sudo pacman -S xfce4-terminal picom dunst gvfs pcmanfm zsh lxappearance ntfs-3g bc alsa-utils pulseaudio pavucontrol xorg-xbacklight  redshift feh imagemagick pulseaudio-alsa pulseaudio-equalizer pulseaudio-jack xorg-xsetroot mpv youtube-dl glances telegram-desktop xf86-video-intel jdk8-openjdk jdk-openjdk gnome-keyring cronie lxsession polkit
+sudo pacman -S xfce4-terminal kitty picom dunst gvfs pcmanfm zsh lxappearance ntfs-3g bc alsa-utils pulseaudio pavucontrol xorg-xbacklight  redshift feh imagemagick pulseaudio-alsa pulseaudio-equalizer pulseaudio-jack xorg-xsetroot mpv youtube-dl glances telegram-desktop xf86-video-intel jdk8-openjdk jdk-openjdk gnome-keyring cronie lxsession polkit 
 ```
 And configuring video options, to Intel Graphics
 ```
@@ -48,32 +48,31 @@ EndSec
 ```
 Fixing java blank apps by
 ```
-sudo echo "export _JAVA_AWT_WM_NONREPARENTING=1" >> /etc/profile.d/jre.sh
+sudo tee /etc/profile.d/jre.sh <<< "export _JAVA_AWT_WM_NONREPARENTING=1"
 ```
 Installing docker, and adding your user to the group
 ``` 
-lsmod | grep loop
-tee /etc/modules-load.d/loop.conf <<< "loop"
 sudo tee /etc/modules-load.d/loop.conf <<< "loop"
-modprobe loop
+sudo tee /etc/modules-load.d/loop.conf <<< "loop"
 sudo modprobe loop
 sudo pacman -S docker
+systemctl enable docker.service
 systemctl start docker.service
-sudo gpasswd -a $USERS docker
+sudo gpasswd -a $USER docker
 ```
 Installing VirtualBox
 ```
 sudo pacman -S virtualbox virtualbox-guest-iso
 sudo modprobe vboxdrv
-sudo gpasswd -a $USERS vboxusers
+sudo gpasswd -a $USER vboxusers
 sudo systemctl enable vboxweb.service
 sudo systemctl start vboxweb.service && sudo systemctl status vboxweb.service
 ```
 Install FiraCode Nerd Font and Terminess Nerd Font. You need logout and login to be able to select the fonts on your terminal emulator
 ```
-mkdir ~/.fonts && cd ~/.fonts
-curl -fLo Terminess\ Nerd\ Font\ Complete  https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Terminus/terminus-ttf-4.40.1/Regular/complete/Terminess%20\(TTF\)%20Nerd%20Font%20Complete.ttf
-curl -fLo Fira\ Code\ Regular\ Nerd\ Font\ Complete.ttf https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Regular/complete/Fira%20Code%20Regular%20Nerd%20Font%20Complete.ttf
+mkdir -p $HOME/.local/share/fonts
+wget -P $HOME/.local/share/fonts/ https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Terminus/terminus-ttf-4.40.1/Regular/complete/Terminess%20\(TTF\)%20Nerd%20Font%20Complete.ttf
+wget -P $HOME/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Regular/complete/Fira%20Code%20Regular%20Nerd%20Font%20Complete.ttf
 sudo fc-cache -f -v
 ```
 Install Oh my zsh and enabling zsh-autosuggestions, zsh-syntax-highlighting and powerlevel10k plugins

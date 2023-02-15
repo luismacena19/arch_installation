@@ -53,31 +53,31 @@ Note that chunsuke is an arbitrary name that you can choose freely, BUT, that na
 ```bash
 cryptsetup luksOpen /dev/sda3 chunsuke
 
+mkfs.ext4 /dev/mapper/chunsuke
+
 pvcreate /dev/mapper/chunsuke
 
 vgcreate VGMaruGroup /dev/mapper/chunsuke
 
-lvcreate -L 60G VGMaruGroup -n root && \
+lvcreate -L 60G VGMaruGroup -n root 
 
-lvcreate -l 100%FREE VGMaruGroup -n home && \
+lvcreate -l 100%FREE VGMaruGroup -n home 
 
-mkfs.ext4 /dev/VGMaruGroup/home && \
+mkfs.ext4 /dev/VGMaruGroup/home 
 
-mkfs.ext4 /dev/VGMaruGroup/root && \
+mkfs.ext4 /dev/VGMaruGroup/root 
 
-mount /dev/VGMaruGroup/root /mnt && \
+mount /dev/VGMaruGroup/root /mnt 
 
-mkdir /mnt/home && \
+mkdir /mnt/home
 
 mount /dev/VGMaruGroup/home /mnt/home
 
-mkfs.ext4 /dev/mapper/chunsuke
 ```
 
 After that we need to mount de filesystem so we can create the directories that grub uses for boot.
 
 ```bash
-mount /dev/mapper/chunsuke /mnt
 
 mkdir -p /mnt/boot
 
@@ -89,7 +89,7 @@ sync
 Now lets install the system, generate fstab and chroot into the system
 
 ```bash
-pacstrap /mnt base base-devel linux linux-headers linux-firmware neovim
+pacstrap /mnt base base-devel linux linux-headers linux-firmware neovim efibootmgr
 
 genfstab -p /mnt >> /mnt/etc/fstab
 
@@ -143,13 +143,15 @@ nvim /etc/hosts
 Now we can install some needed programs.
 
 ```bash
-pacman -S dosfstools os-prober mtools network-manager-applet networkmanager wpa_supplicant git xorg-server xorg-xinit wireless_tools dialog terminus-font grub --noconfirm
+pacman -S dosfstools os-prober mtools network-manager-applet networkmanager wpa_supplicant git xorg-server xorg-xinit wireless_tools dialog terminus-font grub iwd dhcpcd --noconfirm
 ```
 
-Enable Network Manager and edit mkinitcpio.conf
+Enable Network and edit mkinitcpio.conf
 
 ```bash
-systemctl enable NetworkManager
+systemctl enable dhcpcd
+
+systemctl enable iwd
 
 nvim /etc/mkinitcpio.conf
 ```
