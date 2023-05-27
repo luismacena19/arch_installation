@@ -53,8 +53,6 @@ Note that chunsuke is an arbitrary name that you can choose freely, BUT, that na
 ```bash
 cryptsetup luksOpen /dev/sda3 chunsuke
 
-mkfs.ext4 /dev/mapper/chunsuke
-
 pvcreate /dev/mapper/chunsuke
 
 vgcreate VGMaruGroup /dev/mapper/chunsuke
@@ -111,17 +109,30 @@ nvim /etc/locale.gen
 
 locale-gen
 
-echo LANG=pt_BR.utf8 >> /etc/locale.conf
+cat <<EOT >> /etc/locale.conf
+LANG=pt_BR.UTF-8
+LC_ADDRESS=pt_BR.UTF-8
+LC_IDENTIFICATION=pt_BR.UTF-8
+LC_MEASUREMENT=pt_BR.UTF-8
+LC_MONETARY=pt_BR.UTF-8
+LC_NAME=pt_BR.UTF-8
+LC_NUMERIC=pt_BR.UTF-8
+LC_PAPER=pt_BR.UTF-8
+LC_TELEPHONE=pt_BR.UTF-8
+LC_TIME=pt_BR.UTF-8
+EOT
 
-echo LANGUAGE=pt_BR >> /etc/locale.conf
 
-echo LC_ALL=C >> /etc/locale.conf
-
-echo KEYMAP=br-abnt2 > /etc/vconsole.conf
+cat <<EOT >> /etc/vconsole.conf
+KEYMAP=br-abnt2
+FONT=ter-v20n
+FONT_MAP=8859-2
+EOT
+ 
 
 passwd
 
-useradd -m -g users -G wheel username
+useradd -m -g users -G wheel $username
 
 passwd username
 ```
@@ -143,7 +154,7 @@ nvim /etc/hosts
 Now we can install some needed programs.
 
 ```bash
-pacman -S dosfstools os-prober mtools network-manager-applet networkmanager wpa_supplicant git xorg-server xorg-xinit wireless_tools dialog terminus-font grub iwd dhcpcd --noconfirm
+pacman -S dosfstools os-prober mtools network-manager-applet networkmanager wpa_supplicant git xorg-server xorg-xinit wireless_tools dialog terminus-font grub lvm2 dhcpcd --noconfirm
 ```
 
 Enable Network and edit mkinitcpio.conf
@@ -151,7 +162,7 @@ Enable Network and edit mkinitcpio.conf
 ```bash
 systemctl enable dhcpcd
 
-systemctl enable iwd
+systemctl enable NetworkManager
 
 nvim /etc/mkinitcpio.conf
 ```
@@ -159,7 +170,7 @@ nvim /etc/mkinitcpio.conf
 We gona add **encrypt** hook on the hooks line.
 
 ```bash
-(HOOKS="base udev autodetect modconf block encrypt filesystems keyboard fsck")
+(HOOKS="base udev autodetect modconf block encrypt lvm2 filesystems keyboard fsck")
 ```
 
 Now we run mkinitcpio with kernel version of our choice
@@ -181,7 +192,7 @@ GRUB_CMDLINE_LINUX="cryptdevice=/dev/sda3:chunsuke"
 Now we can install grub. The option --bootloader-id can be used to choose whatever name you like.
 
 ```bash
-grub-install --target=x86_64-efi --efi-directory=/boot/EFI --bootloader-id=grub
+grub-install --target=x86_64-efi --efi-directory=/boot/EFI --bootloader-id=ARCHLINUX
 
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
